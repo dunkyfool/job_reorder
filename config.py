@@ -1,6 +1,6 @@
 from datetime import date, datetime
 
-# info
+# info:
 #   proj
 #   jid
 #   ko_date
@@ -11,8 +11,21 @@ from datetime import date, datetime
 #   vm_num
 #   extra: [(job, point), ...]
 #
+# renew [2]:
+#    Revise Jenkinsfile(codeline) [1] -> Create New SSC [1]
+# new   [3]:
+#    wait vm -> apply codeline -> new user + install Fortify [1]
+#                              -> revise Jenkinsfile + download codeline + set up Jenkins [1]
+#                              -> set up SSC [1]
+# self  [1]:
+#    install Fortify[1]
+#
+#
 
-DAY_POINT = 3
+DAY_POINT   = 3
+SELF_POINT  = 1
+NEW_POINT   = 3
+REUSE_POINT = 2
 URGENCY_HIGH = 30
 URGENCY_MED  = 60
 URGENCY_LOW  = 90
@@ -22,11 +35,11 @@ def create_job(info):
 
     point, tag = 0, 0
     if info['type'] == 'self':
-        point += 0.5
+        point += SELF_POINT
     elif info['type'] == 'reuse':
-        point += 1
+        point += REUSE_POINT
     elif info['type'] == 'new':
-        point +=2
+        point += NEW_POINT
     point += info['repo_num'] * 0.1 + info['vm_num']
     point += sum([x[1] for x in info['extra']])
 
@@ -65,4 +78,12 @@ def refresh_queue():
 
 def reorder_queue():
     # keep order as possible
+    pass
+
+def calculate_queue():
+    # sum up the point and calculate each job's finish date
+    pass
+
+def show_task_queue():
+    # recommend today task
     pass
